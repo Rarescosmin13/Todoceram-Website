@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localizator Magazine Partenere - Todoceram</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #d9c4b0;
+            color: #111;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 90vh;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: 60px;
+        }
+
+        header img {
+            height: 40px;
+        }
+
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: url('woodtexture1.jpg') no-repeat center center;
+            background-size: cover;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+
+        .menu-overlay.active {
+            display: flex;
+        }
+
+        .menu-overlay a {
+            color: #fff;
+            font-size: 2em;
+            margin: 10px;
+        }
+
+        .close-menu {
+            position: absolute;
+            bottom: 20px;
+            width: 80px;
+            height: 80px;
+            background-color: #111;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Styling for store locator to resemble Moooi store locator */
+        .store-info {
+            font-family: 'Playfair Display', serif;
+            color: #333;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            max-width: 300px;
+        }
+
+        .store-info:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .store-info img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Adjust map marker styling */
+        .leaflet-popup-content-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="todoceram-negru.png" alt="Sigla Todoceram">
+    </header>
+
+    <div id="map"></div>
+
+    <button class="floating-button" onclick="toggleMenu()"></button>
+    <div class="menu-overlay" id="menuOverlay">
+        <a href="TDC-Parceht.html">Home</a>
+        <a href="about-us.html">About Us</a>
+        <a href="Store-Locator.html">Localizator Magazine Partenere</a>
+        <a href="https://www.interioo.ro/placi-ceramice">Plăci Ceramice</a>
+        <a href="#">Contact</a>
+        <div class="close-menu" onclick="toggleMenu()">Close</div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay.classList.contains('active')) {
+                menuOverlay.classList.remove('active');
+            } else {
+                menuOverlay.classList.add('active');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var map = L.map('map').setView([45.9432, 24.9668], 6); // Center Romania
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+            }).addTo(map);
+
+            // Updated store data from JSON
+            const storeData = [
+                {"Store Name":"Keramic & Doors","Address":"Strada Gheorghe Sincai, Sighetu Marmatiei, Maramureș, Romania","Latitude":47.9277,"Longitude":23.8977,"Store Type":"Wholesale and retail for interior doors, parquet, tiles, and wallpaper"},
+                {"Store Name":"Interioo","Address":"ERA Home Center, Calea Aradului Nr. 62, Oradea, Romania","Latitude":47.0506,"Longitude":21.918,"Store Type":"Retail showroom specializing in ceramics, sanitary ware, and home design products"},
+                {"Store Name":"Coninstal KNT","Address":"Strada 22 Decembrie, Vișeu de Sus, Maramureș, Romania","Latitude":47.7167,"Longitude":24.4333,"Store Type":"Wholesale distributor of lumber, plywood, millwork, and wood panel products"},
+                {"Store Name":"Constructorul Canda","Address":"Strada Victoriei, Nr. 10, Negrești-Oaș, Satu Mare, Romania","Latitude":47.87398,"Longitude":23.42771,"Store Type":"General merchandise and construction materials"},
+                {"Store Name":"Madalina Grup","Address":"Strada Nicu Leonard, Nr. 6, Bloc A10, Parter, Câmpulung, Argeș, Romania","Latitude":45.272,"Longitude":25.0458,"Store Type":"Retail in sanitary and heating installations, decorative items, and furniture"},
+                {"Store Name":"Inna Top Design","Address":"Strada Malva, Nr. 3-5, Sector 3, Bucharest, Romania","Latitude":44.4268,"Longitude":26.1025,"Store Type":"Specialized retail in hardware, glass, and paint products"},
+                {"Store Name":"Pantano","Address":"Strada Horea Nr. 65, Beiuș, Bihor, Romania","Latitude":46.6712,"Longitude":22.3421,"Store Type":"Retail and wholesale construction materials and ceramic tiles"},
+                {"Store Name":"Lusso Interni","Address":"Șoseaua Olteniței, Nr. 216, Camera 1, Popești-Leordeni, Ilfov, Romania","Latitude":44.3944,"Longitude":26.1189,"Store Type":"Wholesale in construction materials and interior design products"},
+                {"Store Name":"Amazon Decor","Address":"Strada Constantin Brancoveanu, Nr. 44-46, Alexandria, Teleorman, Romania","Latitude":43.9692,"Longitude":25.3267,"Store Type":"Wholesale in construction materials and sanitary equipment"},
+                {"Store Name":"Duocons Mălini","Address":"Strada Principală, Nr. 784, Sat Mălini, Comuna Mălini, Suceava, Romania","Latitude":47.45,"Longitude":26.0667,"Store Type":"Retail in hardware, glass, and paint products in specialized stores"}
+            ];
+
+            storeData.forEach(function (store) {
+                L.marker([store.Latitude, store.Longitude]).addTo(map)
+                    .bindPopup(`<div class="store-info"><b>${store['Store Name']}</b><br>Adresa: ${store.Address}<br>Tip: ${store['Store Type']}</div>`);
+            });
+        });
+    </script>
+</body>
+</html>

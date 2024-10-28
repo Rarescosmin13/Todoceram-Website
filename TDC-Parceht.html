@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todoceram Pardoseli Calde</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: #d9c4b0;
+            color: #111;
+            overflow-x: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: 60px;
+        }
+
+        header img {
+            height: 40px;
+        }
+
+        .language-switch {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .language-switch a {
+            cursor: pointer;
+            padding: 5px 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #111;
+            color: #fff;
+            font-size: 0.9em;
+        }
+
+        /* Full-screen sections */
+        .section {
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: space-between;
+            flex-direction: row;
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section:nth-child(even) {
+            flex-direction: row-reverse;
+            background-color: #f0f0f0;
+        }
+
+        .info-text {
+            flex: 1;
+            padding: 60px;
+            font-family: 'Playfair Display', serif;
+            color: #333;
+            font-size: 1.4em;
+            line-height: 1.5;
+            max-width: 50%;
+            transition: transform 0.3s ease-in-out;
+            border-left: 4px solid #333;
+            padding-left: 40px;
+        }
+
+        .info-text:hover {
+            transform: scale(1.02);
+        }
+
+        .info-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            max-width: 50%;
+            transition: transform 0.3s ease-in-out;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-image img {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Product Collection */
+        .product-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            padding: 0 10px;
+            background-color: #fff;
+            padding: 60px 0;
+        }
+
+        .product-item {
+            background-color: transparent;
+            padding: 10px;
+            text-align: center;
+            width: calc(18% - 20px);
+            color: #111;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-item:hover {
+            transform: scale(1.08);
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-item p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Floating Navigation Button */
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: url('woodtexture1.jpg') no-repeat center center;
+            background-size: cover;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .menu-overlay a {
+            color: #fff;
+            font-size: 1.6em;
+            margin: 10px;
+        }
+
+        .close-menu {
+            position: absolute;
+            bottom: 20px;
+            width: 80px;
+            height: 80px;
+            background-color: #111;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .section {
+                flex-direction: column;
+            }
+
+            .info-text {
+                max-width: 100%;
+                padding: 20px;
+            }
+
+            .info-image {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .info-image img {
+                width: 100%;
+                height: auto;
+            }
+
+            .product-item {
+                width: 90%;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sections = document.querySelectorAll('.section');
+
+            function revealSections() {
+                sections.forEach(section => {
+                    const sectionTop = section.getBoundingClientRect().top;
+                    if (sectionTop < window.innerHeight - 100) {
+                        section.classList.add('visible');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', revealSections);
+            revealSections();
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <img src="todoceram-negru.png" alt="Sigla Todoceram">
+        <div class="language-switch">
+            <a href="#" onclick="setLanguage('ro')">RO</a>
+            <a href="#" onclick="setLanguage('en')">ENG</a>
+        </div>
+    </header>
+
+    <div class="section">
+        <div class="info-text" id="experienta-noastra">
+            <h2 style="font-size: 2.4em; font-weight: bold;">Experiența Noastră</h2>
+            <p>
+                Echipa Todoceram are peste 20 de ani de experiență în industria pardoselilor ceramice. Iar acum vine în ajutorul tău cu noi soluții de pardoseală caldă. Echipa noastră calificată asigură cea mai înaltă calitate a produselor, iar rețeaua noastră extinsă de distribuție acoperă fiecare colț al României și nu numai.
+            </p>
+        </div>
+        <div class="info-image">
+            <img src="luxurious_interior_9.png" alt="Interior Luxos 9">
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="info-text" id="designuri-luxoase">
+            <h2 style="font-size: 2.4em; font-weight: bold;">Baia Ta, Prioritatea Noastră</h2>
+            <p>
+                Experiența noastră vastă în ceramice se traduce într-o selecție unică de obiecte sanitare care adaugă valoare fiecărui spațiu de baie. Fiecare piesă a fost atent aleasă pentru a combina funcționalitatea cu estetica de lux, oferindu-vă posibilitatea de a transforma baia într-un spațiu exclusivist. De la finisaje impecabile până la designuri inovatoare, vă oferim o gamă completă de obiecte sanitare și mobilier pentru baie, ce reflectă eleganța și rafinamentul pe care doar un expert în ceramice îl poate aduce.
+            </p>
+        </div>
+        <div class="info-image">
+            <img src="luxurious_interior_5.png" alt="Interior Luxos 5">
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="info-text" id="maiestrie-calitate">
+            <h2 style="font-size: 2.4em; font-weight: bold;">Măiestrie și Calitate</h2>
+            <p>
+                La Todoceram, punem accent pe măiestrie și calitate, asigurând că fiecare produs îndeplinește cele mai înalte standarde. Indiferent dacă preferați stilul modern sau clasic, colecția noastră are ceva pentru fiecare gust.
+            </p>
+        </div>
+        <div class="info-image">
+            <img src="luxurious_interior_4.png" alt="Interior Luxos 4">
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="info-text" id="transformati-spatiul">
+            <h2 style="font-size: 2.4em; font-weight: bold;">Transformați-vă Spațiul</h2>
+            <p>
+                Transformați-vă casa cu gama noastră exclusivă de soluții de pardoseli calde. Concepute pentru a oferi confort și durabilitate, pardoselile noastre vor îmbunătăți atmosfera oricărei camere.
+            </p>
+        </div>
+        <div class="info-image">
+            <img src="luxurious_interior_1.png" alt="Interior Luxos 1">
+        </div>
+    </div>
+
+    <section class="product-gallery" id="galerie-produse">
+        <div class="product-item">
+            <a href="https://www.interioo.ro/obiecte-sanitare">
+                <img src="Bathtub.png" alt="Bathtub">
+                <p>Obiecte Sanitare</p>
+            </a>
+        </div>
+        <div class="product-item">
+            <a href="https://www.interioo.ro/obiecte-sanitare/mobilier-de-baie">
+                <img src="mobilier-baie.png" alt="Mobilier Baie">
+                <p>Mobilier pentru baie</p>
+            </a>
+        </div>
+        <div class="product-item">
+            <a href="https://www.interioo.ro/placi-ceramice/mozaic">
+                <img src="Mozaic.png" alt="Mozaic">
+                <p>Mozaic sau Decor</p>
+            </a>
+        </div>
+        <div class="product-item">
+            <a href="https://www.interioo.ro/placi-ceramice/gresie">
+                <img src="Gresie.png" alt="Gresie">
+                <p>Gresie</p>
+            </a>
+        </div>
+        <div class="product-item">
+            <a href="https://www.interioo.ro/parchet/laminat">
+                <img src="Myfloor_Cottage.png" alt="Parceht Laminat">
+                <p>Parceht Laminat</p>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2024 Todoceram. Toate drepturile rezervate. | Contactați-ne la info@todoceram.com
+    </footer>
+
+    <button class="floating-button" onclick="toggleMenu()"></button>
+    <div class="menu-overlay" id="menuOverlay">
+        <a href="TDC-Parceht.html">Home</a>
+        <a href="about-us.html">About Us</a>
+        <a href="Store-Locator.html">Localizator Magazine Partenere</a>
+        <a href="https://www.interioo.ro/placi-ceramice">Plăci Ceramice</a>
+        <a href="#">Contact</a>
+        <div class="close-menu" onclick="toggleMenu()">Close</div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay.style.display === 'flex') {
+                menuOverlay.style.display = 'none';
+            } else {
+                menuOverlay.style.display = 'flex';
+            }
+        }
+
+        function setLanguage(lang) {
+            if (lang === 'ro') {
+                document.documentElement.lang = 'ro';
+                document.getElementById('experienta-noastra').querySelector('h2').innerText = 'Experiența Noastră';
+                document.getElementById('experienta-noastra').querySelector('p').innerText = 'Echipa Todoceram are peste 20 de ani de experiență în industria pardoselilor ceramice. Iar acum vine în ajutorul tău cu noi soluții de pardoseală caldă. Echipa noastră calificată asigură cea mai înaltă calitate a produselor, iar rețeaua noastră extinsă de distribuție acoperă fiecare colț al României și nu numai.';
+                document.getElementById('designuri-luxoase').querySelector('h2').innerText = 'Baia Ta, Prioritatea Noastră';
+                document.getElementById('designuri-luxoase').querySelector('p').innerText = 'Experiența noastră vastă în ceramice se traduce într-o selecție unică de obiecte sanitare care adaugă valoare fiecărui spațiu de baie. Fiecare piesă a fost atent aleasă pentru a combina funcționalitatea cu estetica de lux, oferindu-vă posibilitatea de a transforma baia într-un spațiu exclusivist. De la finisaje impecabile până la designuri inovatoare, vă oferim o gamă completă de obiecte sanitare și mobilier pentru baie, ce reflectă eleganța și rafinamentul pe care doar un expert în ceramice îl poate aduce';
+                document.getElementById('maiestrie-calitate').querySelector('h2').innerText = 'Măiestrie și Calitate';
+                document.getElementById('maiestrie-calitate').querySelector('p').innerText = 'La Todoceram, punem accent pe măiestrie și calitate, asigurând că fiecare produs îndeplinește cele mai înalte standarde. Indiferent dacă preferați stilul modern sau clasic, colecția noastră are ceva pentru fiecare gust.';
+                document.getElementById('transformati-spatiul').querySelector('h2').innerText = 'Transformați-vă Spațiul';
+                document.getElementById('transformati-spatiul').querySelector('p').innerText = 'Transformați-vă casa cu gama noastră exclusivă de soluții de pardoseli calde. Concepute pentru a oferi confort și durabilitate, pardoselile noastre vor îmbunătăți atmosfera oricărei camere.';
+            } else if (lang === 'en') {
+                document.documentElement.lang = 'en';
+                document.getElementById('experienta-noastra').querySelector('h2').innerText = 'Our Expertise';
+                document.getElementById('experienta-noastra').querySelector('p').innerText = 'Todoceram brings over 20 years of experience in the ceramic and parquet flooring industry. Our skilled team ensures the highest quality of products, and our extensive distribution network reaches every corner of Romania and beyond.';
+                document.getElementById('designuri-luxoase').querySelector('h2').innerText = 'Your Bathroom, Our Priority';
+                document.getElementById('designuri-luxoase').querySelector('p').innerText = 'Our extensive experience in ceramics translates into a unique selection of sanitary ware that adds value to every bathroom space. Each piece has been carefully selected to combine functionality with luxurious aesthetics, giving you the opportunity to transform your bathroom into an exclusive sanctuary. From impeccable finishes to innovative designs, we offer a complete range of sanitary ware and bathroom furniture that reflects the elegance and refinement that only a ceramics expert can provide.';
+                document.getElementById('maiestrie-calitate').querySelector('h2').innerText = 'Craftsmanship and Quality';
+                document.getElementById('maiestrie-calitate').querySelector('p').innerText = 'At Todoceram, we prioritize craftsmanship and quality, ensuring every product meets the highest standards. Whether you prefer modern or classic, our collection has something for every taste.';
+                document.getElementById('transformati-spatiul').querySelector('h2').innerText = 'Transform Your Space';
+                document.getElementById('transformati-spatiul').querySelector('p').innerText = 'Transform your home with our exclusive range of warm flooring solutions. Designed to offer both comfort and durability, our floors will enhance the ambiance of any room.';
+            }
+        }
+    </script>
+</body>
+</html>

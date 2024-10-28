@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Todoceram Pardoseli Calde</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: #d9c4b0;
+            color: #111;
+            overflow-x: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: 60px;
+        }
+
+        header img {
+            height: 40px;
+        }
+
+        .language-switch {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .language-switch a {
+            cursor: pointer;
+            padding: 5px 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #111;
+            color: #fff;
+            font-size: 0.9em;
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(Luxurious_interior_10) no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero-section h1 {
+            font-size: 4em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-section p {
+            font-size: 1.7em;
+            max-width: 700px;
+            line-height: 1.8;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+            margin-top: 10px;
+        }
+
+        .about-section {
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: space-between;
+            flex-direction: row;
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+
+        .about-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-section:nth-child(even) {
+            flex-direction: row-reverse;
+            background-color: #f0f0f0;
+        }
+
+        .about-text {
+            flex: 1;
+            padding: 60px;
+            font-family: 'Playfair Display', serif;
+            color: #333;
+            font-size: 1.4em;
+            line-height: 1.5;
+            max-width: 50%;
+            transition: transform 0.3s ease-in-out;
+            border-left: 4px solid #333;
+            padding-left: 40px;
+        }
+
+        .about-text:hover {
+            transform: scale(1.02);
+        }
+
+        .about-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            max-width: 50%;
+            transition: transform 0.3s ease-in-out;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .about-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Floating Navigation Button */
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: url('woodtexture1.jpg') no-repeat center center;
+            background-size: cover;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .menu-overlay a {
+            color: #fff;
+            font-size: 1.6em;
+            margin: 10px;
+        }
+
+        .close-menu {
+            position: absolute;
+            bottom: 20px;
+            width: 80px;
+            height: 80px;
+            background-color: #111;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about-section {
+                flex-direction: column;
+            }
+
+            .about-text {
+                max-width: 100%;
+                padding: 20px;
+            }
+
+            .about-image {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .about-image img {
+                width: 100%;
+                height: auto;
+            }
+
+            .hero-section h1 {
+                font-size: 3em;
+            }
+
+            .hero-section p {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const aboutSections = document.querySelectorAll('.about-section');
+
+            function revealSections() {
+                aboutSections.forEach(section => {
+                    const sectionTop = section.getBoundingClientRect().top;
+                    if (sectionTop < window.innerHeight - 100) {
+                        section.classList.add('visible');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', revealSections);
+            revealSections();
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <img src="todoceram-negru.png" alt="Sigla Todoceram">
+        <div class="language-switch">
+            <a href="#" onclick="setLanguage('ro')">RO</a>
+            <a href="#" onclick="setLanguage('en')">ENG</a>
+        </div>
+    </header>
+
+    <div class="hero-section">
+        <h1>Despre Noi</h1>
+        <p>Experiență de peste 20 de ani în pardoseli de calitate, gata să îmbunătățim fiecare casă din România.</p>
+    </div>
+
+    <div class="about-section">
+        <div class="about-text" id="istorie-noastra">
+            <h2 style="font-size: 2.4em; font-weight: bold;">Istoria Noastră</h2>
+            <p>
+                Todoceram a fost fondat acum peste 20 de ani cu scopul de a oferi soluții de calitate în industria pardoselilor. De-a lungul anilor, ne-am dezvoltat o rețea puternică de distribuție, iar clienții noștri sunt garanția excelenței noastre.
+            </p>
+        </div>
+        <div class="about-image">
+            <img src="growth_chart.png" alt="Istoria Noastră">
+        </div>
+    </div>
+
+    <div class="about-section">
+        <div class="about-text" id="misiune-valori">
+            <h2 style="font-size: 2.4em; font-weight: bold;">Misiunea și Valorile Noastre</h2>
+            <p>
+                Este să asigurăm clienților noștri satisfacția alegerii potrivite pentru dorințele, nevoile si bugetul fiecăruia, prin diversitatea ofertei de produse, game și prețuri, servicii de consultanță profesioniste și prin inspirația oferită de ambientele create cu grijă și atenție atât  în ton cu cele mai noi trenduri în design, cât și cu un design atemporal pe care să îl iubești o viață. 
+            </p>
+        </div>
+        <div class="about-image">
+            <img src="misiune_interior.png" alt="Misiune și Valori">
+        </div>
+    </div>
+
+    <div class="about-section">
+        <div class="about-text" id="echipa-noastra">
+            <h2 style="font-size: 2.4em; font-weight: bold;">Echipa Noastră</h2>
+            <p>
+                Echipa noastră este formată din experți în domeniul pardoselilor, dedicați să ofere cele mai bune soluții pentru fiecare proiect. Fiecare membru al echipei aduce o experiență vastă și o pasiune pentru calitate.
+            </p>
+        </div>
+        <div class="about-image">
+            <img src="interioo.png" alt="Echipa Noastră">
+        </div>
+    </div>
+
+    <button class="floating-button" onclick="toggleMenu()"></button>
+    <div class="menu-overlay" id="menuOverlay">
+        <a href="TDC-Parceht.html">Home</a>
+        <a href="About-us.html">About Us</a>
+        <a href="Store-Locator.html">Localizator Magazine Partenere</a>
+        <a href="https://www.interioo.ro/placi-ceramice">Plăci Ceramice</a>
+        <a href="#">Contact</a>
+        <div class="close-menu" onclick="toggleMenu()">Close</div>
+    </div>
+
+    <footer>
+        &copy; 2024 Todoceram. Toate drepturile rezervate. | Contactați-ne la info@todoceram.com
+    </footer>
+
+    <script>
+        function setLanguage(lang) {
+            if (lang === 'ro') {
+                document.documentElement.lang = 'ro';
+                document.getElementById('istorie-noastra').querySelector('h2').innerText = 'Istoria Noastră';
+                document.getElementById('istorie-noastra').querySelector('p').innerText = 'Todoceram a fost fondat acum peste 20 de ani cu scopul de a oferi soluții de calitate în industria pardoselilor. De-a lungul anilor, ne-am dezvoltat o rețea puternică de distribuție, iar clienții noștri sunt garanția excelenței noastre.';
+                document.getElementById('misiune-valori').querySelector('h2').innerText = 'Misiunea și Valorile Noastre';
+                document.getElementById('misiune-valori').querySelector('p').innerText = 'Misiunea noastră este de a aduce confortul în casele românilor prin soluții inovatoare și durabile. Valorile noastre sunt încrederea, calitatea și dedicația pentru satisfacția clienților.';
+                document.getElementById('echipa-noastra').querySelector('h2').innerText = 'Echipa Noastră';
+                document.getElementById('echipa-noastra').querySelector('p').innerText = 'Echipa noastră este formată din experți în domeniul pardoselilor, dedicați să ofere cele mai bune soluții pentru fiecare proiect. Fiecare membru al echipei aduce o experiență vastă și o pasiune pentru calitate.';
+            } else if (lang === 'en') {
+                document.documentElement.lang = 'en';
+                document.getElementById('istorie-noastra').querySelector('h2').innerText = 'Our History';
+                document.getElementById('istorie-noastra').querySelector('p').innerText = 'Todoceram was founded over 20 years ago with the goal of providing quality solutions in the flooring industry. Over the years, we have developed a strong distribution network, and our clients are a testament to our excellence.';
+                document.getElementById('misiune-valori').querySelector('h2').innerText = 'Our Mission and Values';
+                document.getElementById('misiune-valori').querySelector('p').innerText = 'Our mission is to bring comfort to Romanian homes through innovative and durable solutions. Our values are trust, quality, and dedication to customer satisfaction.';
+                document.getElementById('echipa-noastra').querySelector('h2').innerText = 'Our Team';
+                document.getElementById('echipa-noastra').querySelector('p').innerText = 'Our team consists of flooring experts dedicated to providing the best solutions for every project. Each team member brings extensive experience and a passion for quality.';
+            }
+        }
+
+        function toggleMenu() {
+            const menuOverlay = document.getElementById('menuOverlay');
+            if (menuOverlay.style.display === 'flex') {
+                menuOverlay.style.display = 'none';
+            } else {
+                menuOverlay.style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>
