@@ -6,6 +6,64 @@
     <title>About Us - Todoceram Pardoseli Calde</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <style>
+
+        .hero-section {
+    position: relative;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110%;
+    height: 110%;
+    object-fit: cover;
+    transform: scale(1.1);
+    animation: backgroundPan 20s linear infinite;
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    opacity: 0;
+    animation: fadeIn 3s ease forwards;
+}
+
+.hero-content h1 {
+    font-size: 4em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+}
+
+.hero-content p {
+    font-size: 1.7em;
+    max-width: 700px;
+    line-height: 1.8;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+    margin-top: 10px;
+}
+
+@keyframes backgroundPan {
+    0% { transform: scale(1.1) translateX(0); }
+    50% { transform: scale(1.1) translateX(-10%); }
+    100% { transform: scale(1.1) translateX(0); }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
         /* Reset */
         * {
             margin: 0;
@@ -255,9 +313,13 @@
     </header>
 
     <div class="hero-section">
-        <h1>Despre Noi</h1>
-        <p>Experiență de peste 20 de ani în pardoseli de calitate, gata să îmbunătățim fiecare casă din România.</p>
+        <div class="hero-content">
+            <h1>Despre Noi</h1>
+            <p>Experiență de peste 20 de ani în pardoseli de calitate, gata să îmbunătățim fiecare casă din România.</p>
+        </div>
+        <img src="Luxurious_interior_10.png" alt="Background Image" class="hero-background">
     </div>
+    
 
     <div class="about-section">
         <div class="about-text" id="istorie-noastra">
@@ -339,5 +401,17 @@
             }
         }
     </script>
+    <script>
+        // JavaScript for parallax scrolling effect on the hero background image
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            document.querySelector('.hero-background').style.transform = `translateY(${scrollY * 0.3}px) scale(1.1)`;
+        });
+    </script>
 </body>
 </html>
+
+
+</body>
+</html>
+
